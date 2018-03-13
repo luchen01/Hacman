@@ -8,6 +8,7 @@ import {
 
 import './Game.css'
 
+const DEBUG_BOXES = false
 const KEY_WHITE_LIST = /ArrowRight|ArrowLeft|ArrowUp|ArrowDown/
 
 let _key = 0 // our render loop is deterministic so it can be global
@@ -57,10 +58,10 @@ class Game extends Component {
       <div className='animated-bg'>
         <div className='container'>
           <div className='tv'></div>
-          <div className='screen'>
+          <div className={DEBUG_BOXES ? 'debug screen' : 'screen'}>
             <div className='board' ref={el => this.boardEl = el}>
               {maze && maze.map(sprite)}
-              {hackman && hackman.map(sprite)}
+              {hackman && sprite(hackman)}
               {ghosts && ghosts.map(sprite)}
               {prizes && prizes.map(sprite)}
               {food && food.map(sprite)}

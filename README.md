@@ -62,3 +62,21 @@ application.
 
 And remember, the purpose of this exercise is to help you demonstrate your
 abilities on your own time in a low-pressure environment. Have fun with it!
+
+## TIPS
+
+Collision Detection - given an array of items and a single item like (hacman, ghost)
+the function x will return a list of intersecting boxes. This includes an index an a
+x,y delta to help move the item to touch the intersecting item.
+```javascript
+    const intersects = collisionDetection(hackman, maze)
+    if(intersects.length) {
+      // "index" is the index to the intersecting item that was found in maze
+      // "dxy" is the offset to hackman needed to make hackman touch the maze boundaries
+      const {index, dxy} = intersects[0]
+      const touchingHacman = makeHacman(old.top + dxy[1], old.left + dxy[0], 'r')
+    }
+```
+
+The keys (Array Up, Down, Right, Left) are saved in the redux store.
+

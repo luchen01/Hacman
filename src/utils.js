@@ -72,13 +72,13 @@ function getBoundingBox(el) {
  * @return {*}
  */
 export const collisionDetection = (inputA, inputB) => {
-  const inputABoxes = inputA.map(getBoundingBox)
-  const inputBBoxes = inputB.map(getBoundingBox)
+  const inputABoxes = [getBoundingBox(inputA)]
+  const inputBBoxes = Array.isArray(inputB) ? inputB.map(getBoundingBox) : [getBoundingBox(inputB)]
 
   return boxIntersect(inputABoxes, inputBBoxes).map(([boxA, boxB]) => {
     const [ax, ay, aX, aY, aD] = inputABoxes[boxA]
-    const [bx, by, bX, bY, bD] = inputBBoxes[boxB]
-    const safe = [0,0]
+    const [bx, by, bX, bY] = inputBBoxes[boxB]
+    const dxy = [0,0]
 
     const top = (aY > by && aY < bY)
     const bottom = (ay > by && ay < bY)
@@ -86,27 +86,17 @@ export const collisionDetection = (inputA, inputB) => {
     const right = (ax > bx && ax < bX)
 
     if(aD) {
-      if (top && aD === 'd') safe[1] = by - aY
-      if (bottom && aD === 'u') safe[1] = bY - ay
-      if (left && aD === 'r') safe[0] = bx - aX
-      if (right && aD === 'l') safe[0] = bX - ax
+      if (top && aD === 'd') dxy[1] = by - aY
+      if (bottom && aD === 'u') dxy[1] = bY - ay
+      if (left && aD === 'r') dxy[0] = bx - aX
+      if (right && aD === 'l') dxy[0] = bX - ax
 
-      if (safe[0] > 0) safe[0] += 1
-      if (safe[0] < 0) safe[0] -= 1
-      if (safe[1] > 0) safe[1] += 1
-      if (safe[1] < 0) safe[1] -= 1
+      if (dxy[0] > 0) dxy[0] += 1
+      if (dxy[0] < 0) dxy[0] -= 1
+      if (dxy[1] > 0) dxy[1] += 1
+      if (dxy[1] < 0) dxy[1] -= 1
     }
 
-/*
-    if(left && right && top) safe[1] = by - aY
-    else if(left && right && bottom) safe[1] = bY - ay
-    else if(top && bottom && left) safe[0] = bX - ax
-    else if(top && bottom && right) safe[0] = bx - aX
-    else if(top && right) safe[1] = by - aY
-    else if(bottom && right) safe[1] = bY - ay
-    else if(top && left) safe[1] = by - aY
-    else if(bottom && left) safe[1] = bY - ay
-    */
-    return [boxA, boxB, safe]
+    return {index: boxB, dxy}
   })
 }

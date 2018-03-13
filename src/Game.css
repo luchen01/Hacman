@@ -309,7 +309,6 @@ html, body, #root {
     image-rendering: pixelated;
 }
 
-/*
-    transform-style: preserve-3d;
-    transform: rotateX(-40deg) rotateY(32deg);
- */
+.debug .hacman, .debug .ghost, .debug .wall {
+    outline: 1px solid yellow;
+}
