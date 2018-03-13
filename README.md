@@ -74,7 +74,13 @@ x,y delta to help move the item to touch the intersecting item.
       const {index, dxy} = intersects[0]
       const touchingHacman = makeHacman(old.top + dxy[1], old.left + dxy[0], 'r')
     }
+
+		// NOTE: Make sure the walls are 15 > px else the collision could stop working!
 ```
 
 The keys (Array Up, Down, Right, Left) are saved in the redux store.
 
+If you want to change the speed of hacman you can update the game clock
+from 100ms to 50ms i.e. `<Game gameClock={100}/>`
+
+In `Game.js` you can turn on additional debug by updating the `const debug = false;`

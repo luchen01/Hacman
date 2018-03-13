@@ -35,10 +35,10 @@ export const tick = (state, action) => {
 }
 
 const LOOKUP_MAP = {
-  'ArrowUp': ['u', -15, 0],
-  'ArrowDown': ['d', 15, 0],
-  'ArrowLeft': ['l', 0, -15],
-  'ArrowRight': ['r', 0, 15],
+  'ArrowUp': ['u', -10, 0],
+  'ArrowDown': ['d', 10, 0],
+  'ArrowLeft': ['l', 0, -10],
+  'ArrowRight': ['r', 0, 10],
 }
 
 export const arrowKey = (state, action) => {
