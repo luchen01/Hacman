@@ -33,7 +33,7 @@ $> npm start
 - Allow Hacman to move around the screen (using arrow keys)
 - Do not let Hacman cross game walls
 - Build a gameboard with walls, food, power pills, ghosts, etc.
-- Make the Score work (food = 10, ghosts = 200/400/800/1600, etc.) (rules)[http://pacman.wikia.com/wiki/Pac-Man_(game)] 
+- Make the Score work (food = 10, ghosts = 200/400/800/1600, etc.) [rules](http://pacman.wikia.com/wiki/Pac-Man_(game))
 
 Extra
 - Animate ghosts & fruit
