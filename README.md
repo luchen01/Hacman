@@ -1,7 +1,5 @@
 # HACKMAN
 
-## App
-
 ![](https://raw.githubusercontent.com/horizons-school-of-technology/hacman/master/public/img/mission_impossible.jpg?token=AAdQQt5g3W2l21dlHXWV_dxEtsru8rliks5asJUhwA%3D%3D)
 
 Your mission if you choose to except it... is to create a retro game.
