@@ -7,6 +7,9 @@ import {
   makeHacman,
   makeFood,
   makeGhost,
+  // collisionDetection,
+  // moveHacman,
+  // moveGhost,
 } from '../utils'
 
 export const reset = (state, action) => {
@@ -29,7 +32,7 @@ export const reset = (state, action) => {
 }
 
 export const tick = (state, action) => {
-  // let { hackman, maze, food, prizes, boardWidth, boardHeight } = state
+  // let { hackman, maze, food, prizes, boardWidth, boardHeight, key } = state
 
   return { ...state }
 }

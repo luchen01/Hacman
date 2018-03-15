@@ -26,7 +26,7 @@ export const makeWall = (top, left, width, height, override = {}) => ({
  */
 export const makeHacman = (top, left, direction, override = {}) => ({
   className: direction ? `hacman hacman-move hacman-${direction}` : 'hacman hacman-move hacman-die',
-  style: {...override, top, left, width: override.width || 64, height: override.height || 64},
+  style: {top, left, width: 64, height: 64, ...override},
   direction,
 })
 
@@ -41,7 +41,7 @@ export const makeHacman = (top, left, direction, override = {}) => ({
  */
 export const makeGhost = (top, left, color, direction, override = {}) => ({
   className: `ghost ghost-${color} ghost-${direction}`,
-  style: {...override, top, left, width: override.width || 64, height: override.height || 64},
+  style: {top, left, width: 64, height: 64, ...override},
   direction,
 })
 
@@ -55,7 +55,7 @@ export const makeGhost = (top, left, color, direction, override = {}) => ({
  */
 export const makeFood = (top, left, override = {}) => ({
   className: 'food',
-  style: {...override, top, left, width: override.width || 10, height: override.height || 10},
+  style: {top, left, width: 10, height: 10, ...override},
 })
 
 
@@ -72,31 +72,74 @@ function getBoundingBox(el) {
  * @return {*}
  */
 export const collisionDetection = (inputA, inputB) => {
-  const inputABoxes = [getBoundingBox(inputA)]
+  const inputABoxes = Array.isArray(inputA) ? inputA.map(getBoundingBox) : [getBoundingBox(inputA)]
   const inputBBoxes = Array.isArray(inputB) ? inputB.map(getBoundingBox) : [getBoundingBox(inputB)]
 
   return boxIntersect(inputABoxes, inputBBoxes).map(([boxA, boxB]) => {
-    const [ax, ay, aX, aY, aD] = inputABoxes[boxA]
+    const [ax, ay, aX, aY/*, aD*/] = inputABoxes[boxA]
     const [bx, by, bX, bY] = inputBBoxes[boxB]
+    const aw = aX - ax
+    const ah = aY - ay
     const dxy = [0,0]
 
-    const top = (aY > by && aY < bY)
-    const bottom = (ay > by && ay < bY)
-    const left = (aX > bx && aX < bX)
-    const right = (ax > bx && ax < bX)
+    const leftPast = bX - ax
+    const rightPast = aX - bx
+    const xDelta = leftPast < rightPast ? leftPast : -rightPast
 
-    if(aD) {
-      if (top && aD === 'd') dxy[1] = by - aY
-      if (bottom && aD === 'u') dxy[1] = bY - ay
-      if (left && aD === 'r') dxy[0] = bx - aX
-      if (right && aD === 'l') dxy[0] = bX - ax
+    const bottomPast = aY - by
+    const topPast = bY - ay
+    const yDelta = bottomPast < topPast ? -bottomPast : topPast
 
-      if (dxy[0] > 0) dxy[0] += 1
-      if (dxy[0] < 0) dxy[0] -= 1
-      if (dxy[1] > 0) dxy[1] += 1
-      if (dxy[1] < 0) dxy[1] -= 1
+    /*if ((aD && (aD === 'u' || aD === 'd')) && Math.abs(xDelta) < aw/2) {
+      dxy[0] = xDelta
+    } else if ((aD && (aD === 'l' || aD === 'r')) && Math.abs(yDelta) < ah/2) {
+      dxy[1] = yDelta
+    } else */
+    if (Math.abs(xDelta) < Math.abs(yDelta)) {
+      dxy[0] = xDelta
+    } else {
+      dxy[1] = yDelta
     }
 
     return {index: boxB, dxy}
   })
 }
+
+export const moveHacman = (hackman, x, y, d, maze) => {
+  const {style: {top, left}} = hackman
+
+  let next = makeHacman(top + y, left + x, d)
+
+  const intersects = collisionDetection(next, maze)
+  if(intersects.length) {
+    const offset = intersects.reduce((acc, {dxy}) => {
+      acc[0] += dxy[0]
+      acc[1] += dxy[1]
+      return acc
+    }, [0, 0])
+
+    next = makeHacman(top + y + offset[1], left + x + offset[0], d)
+  }
+
+  return next
+}
+
+export const moveGhost = (ghost, x, y, color, d, maze) => {
+  const {style: {top, left}} = ghost
+
+  let next = makeGhost(top + y, left + x, color, d)
+
+  const intersects = collisionDetection(next, maze)
+  if(intersects.length) {
+    const offset = intersects.reduce((acc, {dxy}) => {
+      acc[0] += dxy[0]
+      acc[1] += dxy[1]
+      return acc
+    }, [0, 0])
+
+    next = makeGhost(top + y + offset[1], left + x + offset[0], color, d)
+  }
+
+  return next
+}
+
