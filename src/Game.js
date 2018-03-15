@@ -57,6 +57,9 @@ class Game extends Component {
     return (
       <div className='animated-bg'>
         <div className='container'>
+          <h1 style={{textAlign: 'center'}}>
+            Hacman Hacman Hacman......Score: 1234
+        </h1>
           <div className='tv'></div>
           <div className={DEBUG_BOXES ? 'debug screen' : 'screen'}>
             <div className='board' ref={el => this.boardEl = el}>
@@ -65,7 +68,6 @@ class Game extends Component {
               {ghosts && ghosts.map(sprite)}
               {prizes && prizes.map(sprite)}
               {food && food.map(sprite)}
-              <p className="score">Score: 1234</p>
             </div>
           </div>
         </div>
@@ -77,5 +79,3 @@ class Game extends Component {
 export default connect(
   ({maze, prizes, ghosts, hackman, food}) => ({maze, prizes, ghosts, hackman, food})
 )(Game)
-
-

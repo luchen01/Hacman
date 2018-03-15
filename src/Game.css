@@ -273,6 +273,7 @@ html, body, #root {
 .wall {
     border: solid 3px blue;
     border-radius: 10px;
+    /* background-color: blue; */
     background-image: none;
     position: absolute;
     z-index: 30;

@@ -17,6 +17,7 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "eslint-config-airbnb": "^16.1.0",
     "redux-devtools-extension": "^2.13.2"
   }
 }
