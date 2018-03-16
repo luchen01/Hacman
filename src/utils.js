@@ -43,6 +43,7 @@ export const makeGhost = (top, left, color, direction, override = {}) => ({
   className: `ghost ghost-${color} ghost-${direction}`,
   style: {top, left, width: 64, height: 64, ...override},
   direction,
+  color
 })
 
 /**
@@ -142,4 +143,3 @@ export const moveGhost = (ghost, x, y, color, d, maze) => {
 
   return next
 }
-

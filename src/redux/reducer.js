@@ -18,41 +18,41 @@ export const reset = (state, action) => {
   return {
     ...state,
     score: 0,
-    boardWidth: action.w,
-    boardHeight: action.h,
-    hackman: makeHacman(200, 1500, 'l'),
+    boardWidth: action.w, //1236
+    boardHeight: action.h, //928
+    hackman: makeHacman(parseInt(action.h/2), 20, 'r'),
     ghosts: [
       //y, x, color, d
-      makeGhost(574, 680, 'red', 'r'),
+      makeGhost(parseInt(action.h/2), parseInt(action.w/2), 'red', 'r'),
       // makeGhost(210, 680, 'babyblue', 'l'),
       // makeGhost(574, 180, 'pink', 'u'),
     ],
     maze: [
       //y, x,  width, height
-      makeWall(1000, 40, 1536, 15),//bottom line
-      makeWall(185, 40, 1536, 15), //top line
-      makeWall(200, 40, 15, 792), //left line
-      makeWall(200, 1565, 15, 792), //right wall
 
-      makeWall(206, 250, 15, 612), //left wall
-      makeWall(206, 1350, 15, 612),//right wall
-      makeWall(706, 530, 920, 15),
-      makeWall(400, 1450, 15, 300),
-      makeWall(500, 150, 808, 15),
-      makeWall(300, 530, 808, 15),
-      makeWall(900, 250, 1100, 15),
-      makeWall(parseInt(action.h/3), parseInt(action.w/3), 15, 200),
-      makeWall(parseInt(action.h/2), parseInt(action.w/2), 15, 100),
-      makeWall(parseInt(action.h*4/6), parseInt(action.w*3/5), 15, 100),
-      makeWall(parseInt(action.h*4/6), parseInt(action.w/4), 15, 200),
+      makeWall(parseInt(action.h/8), 0, parseInt(action.w), 15),//bottom line
+      makeWall(parseInt(action.h*7/8), 0, parseInt(action.w), 15), //top line
+      makeWall(0, 5, 15, parseInt(action.h)), //left line
+      makeWall(0, parseInt(action.w)-20, 15, parseInt(action.h)), //right wall
+
+      //
+      // makeWall(206, 250, 15, 612), //left wall
+      // makeWall(206, 1350, 15, 612),//right wall
+      // makeWall(706, 530, 920, 15),
+      // makeWall(400, 1450, 15, 300),
+      // makeWall(500, 150, 808, 15),
+      // makeWall(300, 530, 808, 15),
+      // makeWall(900, 250, 1100, 15),
+      makeWall(parseInt(action.h), parseInt(action.w/6), 15, parseInt(action.h/3)),
+      // makeWall(parseInt(action.h), parseInt(action.w*5/6), 15, parseInt(action.h/3)),
+      // makeWall(0, parseInt(action.w/3), 15, parseInt(action.h/3)),
+      // makeWall(parseInt(action.h*4/6), parseInt(action.w/4), 15, 200),
 
     ],
     prizes: [],
-    food: [...[...Array(10)].map((_, i) => makeFood(parseInt(action.h/2) + 55, parseInt(action.w/2) + 64 + (i * 45))),
+    food: [...[...Array(10)].map((_, i) => makeFood(parseInt(action.h/3) + 55, parseInt(action.w/2) + 64 + (i * 45))),
           ...[...Array(30)].map((_, i) => makeFood(950, 250 + (i * 45))),
           ...[...Array(10)].map((_,i)=>makeFood(500 + (i * 45), 1500)),
-
-
     ]
 
   }
@@ -60,31 +60,34 @@ export const reset = (state, action) => {
 
 export const tick = (state, action) => {
   let { score, hackman, maze, ghosts, food, prizes, boardWidth, boardHeight, key } = state;
-  //
+  console.log("boardWidth", boardWidth);
+  console.log("boardHeight", boardHeight);
   // console.log(ghosts)
   ghosts.map((ghost, index)=>{
     //generate random move for ghosts
     let ghostDirection = ghost.direction;
-    if(collisionDetection(ghost, maze)){
-      let move;
-      let direction = Math.random() * 4;
-      if(direction < 1){
-        move = GHOST_MAP['u']
-      } else if(direction < 2){
-        move = GHOST_MAP['d']
-      } else if(direction < 3){
-        move = GHOST_MAP['l']
-      } else {
-        move = GHOST_MAP['r']
-      }
-      let newG = moveGhost(ghost, move[2], move[1], 'red', move[0], maze);
-      state.ghosts[index] = newG;
-
-    }else{
+    console.log(ghostDirection);
+    // if(collisionDetection(ghost, maze)){
+    //   let move;
+    //   let direction = Math.random() * 4;
+    //   console.log(direction);
+    //   if(direction < 1){
+    //     move = GHOST_MAP['u']
+    //   } else if(direction < 2){
+    //     move = GHOST_MAP['d']
+    //   } else if(direction < 3){
+    //     move = GHOST_MAP['l']
+    //   } else {
+    //     move = GHOST_MAP['r']
+    //   }
+    //   let newG = moveGhost(ghost, move[2], move[1], 'red', move[0], maze);
+    //   state.ghosts[index] = newG;
+    //
+    // }else{
       let move = GHOST_MAP[ghostDirection];
       let newG = moveGhost(ghost, move[2], move[1], 'red', move[0], maze);
       state.ghosts[index] = newG;
-    }
+    // }
   })
   console.log(collisionDetection(hackman, food));
 
